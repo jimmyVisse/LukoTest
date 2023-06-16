@@ -7,21 +7,27 @@ export default function InputText(props: {
     onChangeText(text: string): void
     suffix?: string;
     multiLine?: boolean;
+    keyboardType?: "default" | "number-pad" | "decimal-pad"
+    errorMessage?: string;
 }) {
     return (
         <View style={styles.container}>
             <Text>{props.name}</Text>
-            <View style={styles.inputContainer}>
+            <View style={[styles.inputContainer, {borderColor: props.errorMessage !== undefined ? "#FF0000" : colors.mainGrey}]}>
                 <TextInput 
                     style={[styles.input, {height: props.multiLine !== undefined && props.multiLine ? 100 : 20}]}
                     placeholder={props.placeholder}
                     onChangeText={props.onChangeText}
                     multiline={props.multiLine !== undefined && props.multiLine}
+                    keyboardType={props.keyboardType}
                 />
                 {props.suffix && (
                     <Text>{props.suffix}</Text>
                 )}
             </View>
+            {props.errorMessage && (
+                <Text style={styles.error}>{props.errorMessage}</Text>
+            )}
         </View>
     )
 };
@@ -45,5 +51,8 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         fontSize: 16,
+    },
+    error: {
+        color: "#FF0000",
     }
 })
