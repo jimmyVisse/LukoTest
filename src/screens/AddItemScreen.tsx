@@ -5,6 +5,8 @@ import { RootTabScreenProps } from "../navigation/types";
 import { colors } from "../theme/colors";
 import InputText from "../components/InputText";
 import { useEffect, useState } from "react";
+import ImagePickerButton from "../components/ImagePickerButton";
+import { ImagePicker, ImagePickerResult } from "../sdk/ImagePicker";
 
 export default function AddItemScreen({
   navigation,
@@ -12,14 +14,16 @@ export default function AddItemScreen({
   const [errorName, setErrorName] = useState<string | undefined>(undefined);
   const [errorPrice, setErrorPrice] = useState<string | undefined>(undefined);
   const [addDisabled, setAddDisabled] = useState(true);
-  const [itemName, setItemName] = useState<string | undefined>(undefined)
-  const [itemPrice, setItemPrice] = useState<string | undefined>(undefined)
-  const [itemDescription, setItemDescription] = useState<string | undefined>(undefined)
+  const [itemName, setItemName] = useState<string | undefined>(undefined);
+  const [itemPrice, setItemPrice] = useState<string | undefined>(undefined);
+  const [itemDescription, setItemDescription] = useState<string | undefined>(undefined);
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
 
   const checkFormDisabled = () => {
     if (
       itemName !== undefined &&
       itemPrice !== undefined &&
+      imageUrl !== undefined &&
       itemName.length > 0 && 
       itemPrice.length > 0
     ) {
@@ -31,7 +35,7 @@ export default function AddItemScreen({
 
   useEffect(() => {
     checkFormDisabled();
-  }, [itemName, itemPrice])
+  }, [itemName, itemPrice, imageUrl])
 
   const onChangeName = (text: string) => {
     setItemName(text);
@@ -71,6 +75,18 @@ export default function AddItemScreen({
     setErrorPrice(undefined);
   }
 
+  const tapOnAddImage = () => {
+    ImagePicker.pickImage().then((image: ImagePickerResult) => {
+      if (!image !== undefined && !image?.cancelled) {
+        setImageUrl(image?.uri);
+      }
+    });
+  };
+
+  const tapOnTrashImage = () => {
+    setImageUrl(undefined);
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
@@ -78,6 +94,9 @@ export default function AddItemScreen({
         <Button title="Add" disabled={addDisabled} onPress={tapOnAddButton} />
       </View>
       <View style={styles.content}>
+        <View style={styles.imagePickerContainer}>
+          <ImagePickerButton onPress={tapOnAddImage} imageUrl={imageUrl} onPressTrash={tapOnTrashImage} />
+        </View>
         <InputText name="Name" placeholder="Bracelet" onChangeText={onChangeName} errorMessage={errorName}/>
         <InputText name="Value" placeholder="700" onChangeText={onChangePrice} suffix="€" keyboardType="decimal-pad" errorMessage={errorPrice}/>
         <InputText name="Description" placeholder="Optionnal" onChangeText={onChangeDescription} multiLine/>
@@ -103,5 +122,8 @@ const styles = StyleSheet.create({
   },
   content: {
     marginTop: 32,
+  },
+  imagePickerContainer: {
+    alignItems: "center",
   }
 });
