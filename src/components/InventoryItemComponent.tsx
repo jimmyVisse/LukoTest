@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1/2,
         borderRadius: 10,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         margin: 10,
     },
     image: {

@@ -13,7 +13,7 @@ export default function InputText(props: {
     return (
         <View style={styles.container}>
             <Text>{props.name}</Text>
-            <View style={[styles.inputContainer, {borderColor: props.errorMessage !== undefined ? "#FF0000" : colors.mainGrey}]}>
+            <View style={[styles.inputContainer, {borderColor: props.errorMessage !== undefined ? colors.error : colors.mainGrey}]}>
                 <TextInput 
                     style={[styles.input, {height: props.multiLine !== undefined && props.multiLine ? 100 : 20}]}
                     placeholder={props.placeholder}
@@ -46,13 +46,13 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         padding: 8,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
     },
     input: {
         flex: 1,
         fontSize: 16,
     },
     error: {
-        color: "#FF0000",
+        color: colors.error,
     }
 })
