@@ -1,12 +1,13 @@
 import { StyleSheet, View } from "react-native";
 
 import Button from "../components/Button";
-import { RootTabScreenProps } from "../navigation/types";
+import { InventoryItem, RootTabScreenProps } from "../navigation/types";
 import { colors } from "../theme/colors";
 import InputText from "../components/InputText";
 import { useEffect, useState } from "react";
 import ImagePickerButton from "../components/ImagePickerButton";
 import { ImagePicker, ImagePickerResult } from "../sdk/ImagePicker";
+import { InventoryData } from "../data/InventoryData";
 
 export default function AddItemScreen({
   navigation,
@@ -67,7 +68,17 @@ export default function AddItemScreen({
       return;
     }
 
-    console.log("Add item");
+    const itemToAdd: InventoryItem = {
+      name: itemName,
+      value: parseFloat(itemPrice),
+      description: itemDescription,
+    };
+    const addResult = InventoryData.getInstance().addItem(itemToAdd);
+    if (addResult) {
+      navigation.goBack();
+    } else {
+      setErrorPrice("This item value exceeds total amount");
+    }
   }
 
   const clearError = () => {
