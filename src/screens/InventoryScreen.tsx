@@ -5,17 +5,19 @@ import { colors } from "../theme/colors";
 import InventoryItemComponent from "../components/InventoryItemComponent";
 import { useEffect, useState } from "react";
 import { InventoryData } from "../data/InventoryData";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function InventoryScreen({
   navigation,
   route
 }: RootTabScreenProps<"Inventory">) {
+  const isFocused = useIsFocused();
   const handleAddButtonPress = () => navigation.navigate("AddItem");
   const [data, setData] = useState<Items>([]);
 
   useEffect(() => {
     setData(InventoryData.getInstance().getItems());
-  }, InventoryData.getInstance().getItems());
+  }, [isFocused]);
 
   const renderItem = ({item, index}: {item: InventoryItem, index: number}) => {
     return (
