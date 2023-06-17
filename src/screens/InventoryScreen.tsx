@@ -1,56 +1,32 @@
 import { FlatList, StyleSheet, View } from "react-native";
 import { Title } from "../components/Title";
-import { RootTabScreenProps } from "../navigation/types";
+import { InventoryItem, Items, RootTabScreenProps } from "../navigation/types";
 import { colors } from "../theme/colors";
-import InventoryItem from "../components/InventoryItem";
-
-interface InventoryData {
-  id: number;
-  name: string;
-  imageUrl: string;
-  price: number;
-  description?: string;
-  type: string;
-}
+import InventoryItemComponent from "../components/InventoryItemComponent";
+import { useEffect, useState } from "react";
+import { InventoryData } from "../data/InventoryData";
 
 export default function InventoryScreen({
   navigation,
   route
 }: RootTabScreenProps<"Inventory">) {
   const handleAddButtonPress = () => navigation.navigate("AddItem");
-  const data: Array<InventoryData> = [
-    {
-      id: 1,
-      name: "Test",
-      imageUrl: "https://i.ibb.co/znXC7LQ/marcus-lewis-U63z-XX2f7ho-unsplash.jpg",
-      price: 10,
-      type: "Jewel",
-      description: "Test"
-    },
-    {
-      id: 2,
-      name: "Test 2 avec un nom plus long pour voir ce que ça donne",
-      imageUrl: "https://i.ibb.co/znXC7LQ/marcus-lewis-U63z-XX2f7ho-unsplash.jpg",
-      price: 132,
-      type: "Jewel",
-    }
-  ]
+  const [data, setData] = useState<Items>([]);
 
-  const renderItem = ({item}: {item: InventoryData}) => {
+  useEffect(() => {
+    setData(InventoryData.getInstance().getItems());
+  }, InventoryData.getInstance().getItems());
+
+  const renderItem = ({item, index}: {item: InventoryItem, index: number}) => {
     return (
-      <InventoryItem imageUrl={item.imageUrl} name={item.name} price={item.price} />
+      <InventoryItemComponent imageUrl={item.photo} name={item.name} price={item.value} />
     )
   }
-
-  const extractKey = (item: InventoryData): string => {
-    return item.id.toString();
-  }
-
 
   return (
     <View style={styles.container}>
         <Title onButtonPress={handleAddButtonPress}>{route.name}</Title>
-        <FlatList data={data} renderItem={renderItem} keyExtractor={extractKey} numColumns={2} />
+        <FlatList data={data} renderItem={renderItem} numColumns={2} />
     </View>
   );
 }
@@ -60,5 +36,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     backgroundColor: colors.background,
+  },
+  emptyItem: {
+    flex: 1,
   }
 });

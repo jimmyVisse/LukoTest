@@ -2,10 +2,10 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { colors } from "../theme/colors";
 import { fonts } from "../theme/fonts";
 
-export default function InventoryItem(props: {
-    imageUrl: string; 
+export default function InventoryItemComponent(props: {
+    imageUrl?: string; 
     name: string;
-    price: number;
+    price: number | string;
 }) {
     return (
         <View style={styles.container}>
@@ -20,7 +20,7 @@ export default function InventoryItem(props: {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1/2,
         borderRadius: 10,
         backgroundColor: "white",
         margin: 10,
