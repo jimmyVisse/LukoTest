@@ -11,7 +11,7 @@ export default function ImagePickerButton({onPress, imageUrl, onPressTrash}: Pre
                     <Image style={styles.size} source={{uri: imageUrl}} />
                     <Pressable onPress={onPressTrash}>
                         <View style={styles.trash}>
-                            <MaterialCommunityIcons name="trash-can-outline" size={20} color="#FFFFFF" />
+                            <MaterialCommunityIcons name="trash-can-outline" size={20} color={colors.white} />
                         </View>
                     </Pressable>
                 </View>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         height: 30,
         width: 30,
         borderRadius: 25,
-        backgroundColor: "#FF0000",
+        backgroundColor: colors.error,
         alignItems: "center",
         justifyContent: "center",
         position: "absolute",

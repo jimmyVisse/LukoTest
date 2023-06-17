@@ -72,6 +72,7 @@ export default function AddItemScreen({
       name: itemName,
       value: parseFloat(itemPrice),
       description: itemDescription,
+      photo: imageUrl,
     };
     const addResult = InventoryData.getInstance().addItem(itemToAdd);
     if (addResult) {
